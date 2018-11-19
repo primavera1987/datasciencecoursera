@@ -1,0 +1,110 @@
+---
+title: "Reproducible Research: Peer Assessment 1"
+output: 
+  html_document:
+    keep_md: true
+---
+
+
+## Loading and preprocessing the data
+
+###read activity.csv
+
+```{r temp,echo=TRUE}
+activity = read.csv('activity.csv')
+```
+
+###show details 
+
+```{r temp2,echo=TRUE}
+print(head(activity))
+print(summary(activity))
+print(str(activity))
+```
+
+
+
+## What is mean total number of steps taken per day?
+
+###Calculate the total number of steps taken per day 
+
+```{r temp3,echo=TRUE}
+library(dplyr)
+library(ggplot2)
+sub_activity = subset(activity,!is.na(steps),select = c(steps,date))
+STPD = summarise(group_by(sub_activity,date),steps = sum(steps))
+print(STPD)
+qplot(steps,data = STPD)
+```
+### figure1
+
+###Calculate the mean & median number of steps taken per day 
+
+```{r temp4,echo=TRUE}
+sub_M_activity = subset(activity,!is.na(steps),select = c(steps,date))
+STPD = summarise(group_by(sub_activity,date),steps = sum(steps))
+print (mean(STPD$steps))
+print (median(STPD$steps))
+```
+
+## What is the average daily activity pattern?
+
+```{r temp5,echo=TRUE}
+sub_interval_activity = subset(activity,!is.na(steps),select = c(steps,interval))
+STI = summarise(group_by(sub_interval_activity,interval),steps = mean(steps))
+qplot(interval,steps,data = STI,type = '1')
+```
+### figure2
+```{r tempx,echo=TRUE}
+ggplot(STI, aes(interval, steps)) + geom_line()
+```
+### figure3
+```{r tempy,echo=TRUE}
+STI[STI$steps == max(STI$steps),]
+```
+
+
+
+## Imputing missing values
+###Calculate and report the total number of missing values in the dataset 
+```{r temp6,echo=TRUE}
+library(dplyr)
+library(ggplot2)
+sub_activity = subset(activity,is.na(steps),select = c(steps,date))
+print(length(sub_activity$steps))
+```
+### NA values change to main
+
+```{r temp7,echo=TRUE}
+data = read.csv('activity.csv')
+sub_activity = subset(data,!is.na(steps),select = c(steps,date))
+data$steps[is.na(data$steps)] = mean(sub_activity$steps)
+STPD = summarise(group_by(data,date),steps = sum(steps))
+print(STPD)
+qplot(steps,data = STPD)
+```
+### figure4
+
+## Are there differences in activity patterns between weekdays and weekends?
+
+```{r temp8,echo=TRUE}
+data = read.csv('activity.csv')
+weekdays = weekdays(as.Date(data$date))
+i = 1 
+weekend = c()
+for(day in weekdays){
+    if(day == "Sunday"){
+        weekend[i] = TRUE
+    }
+    else{
+        weekend[i] = FALSE
+    }
+    i = i + 1
+}
+days =data.frame(weekdays,weekend)
+data = cbind(data,days)
+sub_activity = subset(data,!is.na(steps),select = c(steps,date))
+STPD = summarise(group_by(sub_activity,date),steps = sum(steps))
+qplot(x = interval,	y = steps,	data = data,color = factor(weekend))	
+```
+### figure5
