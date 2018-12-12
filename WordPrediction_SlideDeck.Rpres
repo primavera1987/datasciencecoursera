@@ -1,0 +1,61 @@
+Coursera Capstone Project - Next Word Prediction
+========================================================
+author: Madhavi Reddy   
+date: 12/31/2017
+autosize: true
+
+Objective
+========================================================
+
+The goal of this exercise is to create a product to highlight the prediction algorithm that must provide an interface which can be accessed by others. Requirements for this project: 
+
+- A Shiny app that takes as input a phrase (multiple words) in a text box input and outputs a prediction of the next word.
+
+- A slide deck consisting of no more than 5 slides created with R Studio Presenter pitching the next word prediction algorithm and app as if one were presenting to their boss or an investor.
+
+Data & Exploratory Analysis
+========================================================
+
+Data used for building this algorithm is a subset of HC Corpora, available at https://d396qusza40orc.cloudfront.net/dsscapstone/dataset/Coursera-SwiftKey.zip
+                     
+Data cleansing was performed on Blogs, News and Twitter datasets from HC Corpora to convert the text to lower case, remove profanities and stopwords, replace word contractions, remove extra white spaces, numbers and special characters, remove URLs and to remove retweets and hashtags from twitter data. 
+
+All text mining and NLP was performed using the R packages tm, stringi, stringr and more.
+
+Description of the Algorithm
+========================================================
+
+For the Next Word Prediction Algorithm, cleansed data is tokenized into n-grams (unigrams, bigrams, trigrams and fourgrams) using N-Gram modeling. (Read more at https://en.wikipedia.org/wiki/N-gram).
+
+Prediction algorithm is built by creating a corpus of the cleansed data and tokenizing the data into n-grams. Frequency dictionaries on unigrams, bigrams, trigrams and fourgrams of the final corpus are used to get the most frequent n-grams. Next word prediction is made based on the user provided input word/phrase and the corresponding n-gram frequencies. 
+
+This predictive model is then built as a fully functional Shiny app that is avaiable at:
+
+https://madhavireddysm.shinyapps.io/Word_Prediction/
+
+Application Usage
+========================================================
+
+Shiny App is divided in two sections, control panel at left and display panel on the righthand side.
+
+Under Control Panel, users can enter a word/phrase that they would like to get next word predictions on, adjust the input slider to control the number of predicted words to return and click on the predict next words button to get the results on display panel. Input slider can be adjusted to return between 1 to 5 words, and is set to a default at 3. User can expect optimal next word predictions with a minimum of 3 word input.
+
+Under Display Panel, user can control the display the display of different views. User can use the top tabs to switch between the two views, Word Prediction and About. Word Prediction is shown by default.
+
+![Application Screenshot](NextWordPrediction.png)
+
+Check the app here! https://madhavireddysm.shinyapps.io/Word_Prediction/
+
+Conclusion  
+========================================================
+
+The application was built with a sample of the data, available memory on my machine (Mac OS, 2.2 GHz Intel Core i7 Processor, 16GB Memory) was a definite limitation with running the algorithm on full dataset. Cleared variables from workspace and created RData files after each memory consuming data cleansing operation to use the largest sample of the data my machine can handle.  
+
+- Next Word Prediction app is hosted on shinyapps.io at:
+
+https://madhavireddysm.shinyapps.io/Word_Prediction/
+
+- Source code for the application and prediction algorithm is available on my Github at:
+
+https://github.com/madhavireddysm/Capstone
+
